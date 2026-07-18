@@ -2,9 +2,9 @@
 Living Lore Board – FastAPI entry point.
 
 Routes:
-  POST /generate-lore    → LangChain + Gemini lore generation
-  POST /generate-avatar  → FLUX.1 text-to-image avatar
-  POST /extract-entities → BERT NER entity extraction
+  POST /generate-lore    → LangChain + Groq/Gemini lore generation
+  POST /generate-avatar  → Pollinations AI text-to-image avatar
+  POST /extract-entities → Groq/Llama 3 entity extraction
 """
 from __future__ import annotations
 
@@ -17,19 +17,21 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, field_validator
 
-from agents.lore_generator import generate_lore
-from ml_pipeline.image_gen import generate_avatar
-from ml_pipeline.nlp_extractor import extract_entities
+# FLATTENED IMPORTS: Importing directly from the root files instead of folders
+from lore_generator import generate_lore
+from image_gen import generate_avatar
+from nlp_extractor import extract_entities
 
 app = FastAPI(title="Living Lore Board API", version="0.1.0")
 
-# Allow the Vite dev server to call the API during development
+# Allowed origins updated to accept common local ports and placeholders for production
 origins = [
     "http://localhost:8080",
     "http://127.0.0.1:8080",
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "http://localhost:3000",
+    "https://your-frontend-project.vercel.app" # <-- Replace with your real Vercel link later!
 ]
 
 app.add_middleware(
@@ -98,6 +100,7 @@ async def lore_endpoint(req: LoreRequest):
 
 @app.post("/generate-avatar", response_model=AvatarResponse)
 async def avatar_endpoint(req: AvatarRequest):
+    # Sends generation requirements off to the lightweight Pollinations handler
     url = await generate_avatar(req.name, req.type, req.description)
     return AvatarResponse(image_url=url)
 
