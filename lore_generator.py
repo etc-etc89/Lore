@@ -19,8 +19,8 @@ from langchain_google_genai import ChatGoogleGenerativeAI  # Kept for future fal
 from langchain_core.prompts import PromptTemplate
 from fastapi import HTTPException
 
-from agents.cascade_config import check_constraints, record_call
-from agents.memory_manager import recall, retain
+from cascade_config import check_constraints, record_call
+from memory_manager import recall, retain
 
 if TYPE_CHECKING:
     # NodeRef is a Pydantic model defined in app.py; imported only for type hints
