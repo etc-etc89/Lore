@@ -4,15 +4,6 @@ python-dotenv
 langchain
 langchain-google-genai
 langchain-groq
-hindsight
-cascadeflow
 requests
 python-multipart
 pydantic
-# Local FLUX.1-schnell pipeline (GPU)
-# PyTorch must be installed separately with the CUDA index URL:
-#   pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-diffusers
-accelerate
-transformers
-safetensors
